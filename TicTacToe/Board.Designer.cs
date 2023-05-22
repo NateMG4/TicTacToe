@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe
 {
-    partial class Form1
+    partial class Board
     {
         /// <summary>
         ///  Required designer variable.
@@ -192,7 +192,7 @@
             playerIndicator.Text = "Player 1";
             playerIndicator.TextAlign = ContentAlignment.TopRight;
             // 
-            // Form1
+            // Board
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -210,7 +210,7 @@
             Controls.Add(Cell10);
             Controls.Add(Cell00);
             Margin = new Padding(4, 5, 4, 5);
-            Name = "Form1";
+            Name = "Board";
             Text = "TicTacToe";
             Load += Form1_Load;
             ResumeLayout(false);
