@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Windows.Markup;
+using static System.Windows.Forms.AxHost;
 
 namespace TicTacToe
 {
@@ -17,6 +21,7 @@ namespace TicTacToe
         public Board board { get; private set; }
         public Player(PlayerType type, int playerId, Board board)
         {
+
             this.type = type;
             this.playerID = playerId;
             this.board = board;
@@ -51,39 +56,56 @@ namespace TicTacToe
 
         public override int getMove(int[] boardState)
         {
-            return minmax(boardState, board.turn)[0];
+            var possibleStates = board.getAllPosibleMoves(boardState, playerID);
+            int bestMove = -1;
+            int bestMoveValue = -10 * playerID;
+            var values = new int[possibleStates.Length];
+            for (int i = 0; i < possibleStates.Length; i++)
+            {
+                (int move, int[] state) = possibleStates[i];
+
+                values[i] = minmax(state, board.turn +1);
+                if (values[i] * playerID > bestMoveValue * playerID)
+                {
+                    bestMove = move;
+                    bestMoveValue = values[i];
+                }
+
+            }
+            return bestMove;
         }
 
 
-        private int[] minmax(int[] boardState, int turn)
+        private int minmax(int[] boardState, int turn)
         {
             int player = turn % 2;
-            var possibleStates = board.getAllPosibleMoves(boardState, player);
-            var values = new int[possibleStates.Length][];
+            var playerId = board.players[player].playerID;
+            int gameState = board.EvalutateBoardState(boardState, player);
+            if (gameState != 0 || (turn == 8 && gameState == 0))
+            {
+                return gameState;
+            }
+
+            var possibleStates = board.getAllPosibleMoves(boardState, playerId);
+            var values = new int[possibleStates.Length];
             for (int i = 0; i < possibleStates.Length; i++)
             {
-                (int[] state, int move) = possibleStates[i];
-                int gameState = board.EvalutateBoardState(state, player);
-                if (gameState != 0 || (turn == 8 && gameState == 0))
-                {
-                    int[] terminalState = { move, gameState };
-                    return terminalState;
-                }
+                (int move, int[] state) = possibleStates[i];
+
 
                 values[i] = minmax(state, turn + 1);
             }
 
 
-            int modifier = board.players[player].playerID == this.playerID ? this.playerID : -this.playerID;
             // var bestMove = values[0];
-            var bestMove = 0;
+            var best = 0;
             for (int n = 0; n < values.Length; n++)
             {
                 // if (values[n][1] * modifier > bestMove[1] * modifier)
-                if (values[n][1] * modifier > values[bestMove][1] * modifier)
+                if (values[n] * playerId > values[best] * playerId)
                 {
                     // bestMove = values[n];
-                    bestMove = n;
+                    best = n;
                 }
 
             }
@@ -93,9 +115,8 @@ namespace TicTacToe
             //     Console.WriteLine(bestMove[1]);
             // }
             // return bestMove;
-            (int[] state2, int move2) = possibleStates[bestMove];
-            int[] bestMoveTuple = {move2, values[bestMove][0]};
-            return bestMoveTuple;
+
+            return values[best];
         }
 
     }

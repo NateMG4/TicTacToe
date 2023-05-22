@@ -40,16 +40,20 @@
             resetButton = new Button();
             winner = new Label();
             playerIndicator = new Label();
+            toolStrip1 = new ToolStrip();
+            checkBox1 = new CheckBox();
+            label1 = new Label();
+            checkBox2 = new CheckBox();
             SuspendLayout();
             // 
             // Cell01
             // 
             Cell01.BorderStyle = BorderStyle.FixedSingle;
             Cell01.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell01.Location = new Point(0, 200);
+            Cell01.Location = new Point(134, 247);
             Cell01.Margin = new Padding(0);
             Cell01.Name = "Cell01";
-            Cell01.Size = new Size(200, 200);
+            Cell01.Size = new Size(100, 100);
             Cell01.TabIndex = 3;
             Cell01.Text = "X";
             Cell01.TextAlign = ContentAlignment.MiddleCenter;
@@ -59,10 +63,10 @@
             // 
             Cell02.BorderStyle = BorderStyle.FixedSingle;
             Cell02.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell02.Location = new Point(0, 400);
+            Cell02.Location = new Point(134, 347);
             Cell02.Margin = new Padding(0);
             Cell02.Name = "Cell02";
-            Cell02.Size = new Size(200, 200);
+            Cell02.Size = new Size(100, 100);
             Cell02.TabIndex = 6;
             Cell02.Text = "X";
             Cell02.TextAlign = ContentAlignment.MiddleCenter;
@@ -72,10 +76,10 @@
             // 
             Cell12.BorderStyle = BorderStyle.FixedSingle;
             Cell12.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell12.Location = new Point(200, 400);
+            Cell12.Location = new Point(234, 347);
             Cell12.Margin = new Padding(0);
             Cell12.Name = "Cell12";
-            Cell12.Size = new Size(200, 200);
+            Cell12.Size = new Size(100, 100);
             Cell12.TabIndex = 7;
             Cell12.Text = "X";
             Cell12.TextAlign = ContentAlignment.MiddleCenter;
@@ -85,10 +89,10 @@
             // 
             Cell22.BorderStyle = BorderStyle.FixedSingle;
             Cell22.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell22.Location = new Point(400, 400);
+            Cell22.Location = new Point(334, 347);
             Cell22.Margin = new Padding(0);
             Cell22.Name = "Cell22";
-            Cell22.Size = new Size(200, 200);
+            Cell22.Size = new Size(100, 100);
             Cell22.TabIndex = 8;
             Cell22.Text = "X";
             Cell22.TextAlign = ContentAlignment.MiddleCenter;
@@ -98,10 +102,10 @@
             // 
             Cell10.BorderStyle = BorderStyle.FixedSingle;
             Cell10.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell10.Location = new Point(200, 0);
+            Cell10.Location = new Point(234, 147);
             Cell10.Margin = new Padding(0);
             Cell10.Name = "Cell10";
-            Cell10.Size = new Size(200, 200);
+            Cell10.Size = new Size(100, 100);
             Cell10.TabIndex = 1;
             Cell10.Text = "X";
             Cell10.TextAlign = ContentAlignment.MiddleCenter;
@@ -111,10 +115,10 @@
             // 
             Cell00.BorderStyle = BorderStyle.FixedSingle;
             Cell00.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell00.Location = new Point(0, 0);
+            Cell00.Location = new Point(134, 147);
             Cell00.Margin = new Padding(0);
             Cell00.Name = "Cell00";
-            Cell00.Size = new Size(200, 200);
+            Cell00.Size = new Size(100, 100);
             Cell00.TabIndex = 0;
             Cell00.Text = "X";
             Cell00.TextAlign = ContentAlignment.MiddleCenter;
@@ -124,10 +128,10 @@
             // 
             Cell21.BorderStyle = BorderStyle.FixedSingle;
             Cell21.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell21.Location = new Point(400, 200);
+            Cell21.Location = new Point(334, 247);
             Cell21.Margin = new Padding(0);
             Cell21.Name = "Cell21";
-            Cell21.Size = new Size(200, 200);
+            Cell21.Size = new Size(100, 100);
             Cell21.TabIndex = 5;
             Cell21.Text = "X";
             Cell21.TextAlign = ContentAlignment.MiddleCenter;
@@ -137,10 +141,10 @@
             // 
             Cell20.BorderStyle = BorderStyle.FixedSingle;
             Cell20.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell20.Location = new Point(400, 0);
+            Cell20.Location = new Point(334, 147);
             Cell20.Margin = new Padding(0);
             Cell20.Name = "Cell20";
-            Cell20.Size = new Size(200, 200);
+            Cell20.Size = new Size(100, 100);
             Cell20.TabIndex = 2;
             Cell20.Text = "X";
             Cell20.TextAlign = ContentAlignment.MiddleCenter;
@@ -150,10 +154,10 @@
             // 
             Cell11.BorderStyle = BorderStyle.FixedSingle;
             Cell11.Font = new Font("Microsoft Sans Serif", 60F, FontStyle.Regular, GraphicsUnit.Point);
-            Cell11.Location = new Point(200, 200);
+            Cell11.Location = new Point(234, 247);
             Cell11.Margin = new Padding(0);
             Cell11.Name = "Cell11";
-            Cell11.Size = new Size(200, 200);
+            Cell11.Size = new Size(100, 100);
             Cell11.TabIndex = 4;
             Cell11.Text = "X";
             Cell11.TextAlign = ContentAlignment.MiddleCenter;
@@ -161,10 +165,11 @@
             // 
             // resetButton
             // 
-            resetButton.Location = new Point(963, 40);
-            resetButton.Margin = new Padding(4, 5, 4, 5);
+            resetButton.AutoSize = true;
+            resetButton.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            resetButton.Location = new Point(243, 86);
             resetButton.Name = "resetButton";
-            resetButton.Size = new Size(107, 38);
+            resetButton.Size = new Size(81, 42);
             resetButton.TabIndex = 9;
             resetButton.Text = "Reset";
             resetButton.UseVisualStyleBackColor = true;
@@ -174,29 +179,73 @@
             // 
             winner.AutoSize = true;
             winner.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            winner.Location = new Point(963, 110);
-            winner.Margin = new Padding(4, 0, 4, 0);
+            winner.Location = new Point(183, 464);
             winner.Name = "winner";
-            winner.Size = new Size(0, 48);
+            winner.Size = new Size(201, 32);
             winner.TabIndex = 10;
+            winner.Text = "Game in progress";
+            winner.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // playerIndicator
             // 
             playerIndicator.AutoSize = true;
             playerIndicator.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            playerIndicator.Location = new Point(963, 215);
-            playerIndicator.Margin = new Padding(4, 0, 4, 0);
+            playerIndicator.Location = new Point(234, 34);
             playerIndicator.Name = "playerIndicator";
-            playerIndicator.Size = new Size(145, 48);
+            playerIndicator.Size = new Size(98, 32);
             playerIndicator.TabIndex = 11;
             playerIndicator.Text = "Player 1";
-            playerIndicator.TextAlign = ContentAlignment.TopRight;
+            playerIndicator.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // toolStrip1
+            // 
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(584, 25);
+            toolStrip1.TabIndex = 12;
+            toolStrip1.Text = "toolStrip1";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkBox1.Location = new Point(12, 262);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(38, 25);
+            checkBox1.TabIndex = 13;
+            checkBox1.Text = "X";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(12, 215);
+            label1.Name = "label1";
+            label1.Size = new Size(106, 32);
+            label1.TabIndex = 14;
+            label1.Text = "AI Player";
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkBox2.Location = new Point(12, 293);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(41, 25);
+            checkBox2.TabIndex = 15;
+            checkBox2.Text = "O";
+            checkBox2.UseVisualStyleBackColor = true;
             // 
             // Board
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1263, 1018);
+            ClientSize = new Size(584, 561);
+            Controls.Add(checkBox2);
+            Controls.Add(label1);
+            Controls.Add(checkBox1);
+            Controls.Add(toolStrip1);
             Controls.Add(playerIndicator);
             Controls.Add(winner);
             Controls.Add(resetButton);
@@ -209,7 +258,6 @@
             Controls.Add(Cell20);
             Controls.Add(Cell10);
             Controls.Add(Cell00);
-            Margin = new Padding(4, 5, 4, 5);
             Name = "Board";
             Text = "TicTacToe";
             Load += Form1_Load;
@@ -230,5 +278,9 @@
         private Button resetButton;
         private Label winner;
         private Label playerIndicator;
+        private ToolStrip toolStrip1;
+        private CheckBox checkBox1;
+        private Label label1;
+        private CheckBox checkBox2;
     }
 }

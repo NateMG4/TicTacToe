@@ -17,16 +17,17 @@ namespace TicTacToe
         private int[] currentBoard = new int[9];
         private string playerName => playerNumber == 0 ? "X" : "O";
         private Label[] cells;
-        private bool gameFinished = false;
 
-        public Board()
+        private bool gameFinished = false;
+        private bool testing = false;
+        public Board(PlayerType playerX, PlayerType playerO)
         {
             InitializeComponent();
-
-            var p1 = new HumanPlayer(-1, this);
-            var p2 = new AiPlayer(1, this);
-            players[0] = p1;
-            players[1] = p2;
+            //playerX == PlayerType.HUMAN_PLAYER ? new HumanPlayer(1, this) : new AiPlayer(1, this)
+            var pX = new HumanPlayer(-1, this);
+            var pO = new AiPlayer(-1, this);
+            players[0] = pX;
+            players[1] = pO;
 
             this.cells = FindAllCells();
             resetBoard();
@@ -55,6 +56,13 @@ namespace TicTacToe
             }
 
         }
+
+        private void testingStart(int numGames, int moveDelay, int gameDelay)
+        {
+
+        }
+
+
         public Label[] FindAllCells()
         {
             var cells = new Label[9];
@@ -63,7 +71,7 @@ namespace TicTacToe
                 int x = i % 3;
                 int y = i / 3;
                 var name = $"Cell{x}{y}";
-                cells[i]= this.Controls[name] as Label;
+                cells[i] = this.Controls[name] as Label;
             }
 
             return cells;
@@ -157,20 +165,20 @@ namespace TicTacToe
         // }
 
 
-        public Tuple<int[],int>[] getAllPosibleMoves(int[] boardState, int playerIndex)
+        public Tuple<int, int[]>[] getAllPosibleMoves(int[] boardState, int playerID)
         {
-            int[] moves = boardState.Select((b, i) => b == 0 ? i : 0).Where(x => x != 0).ToArray();
-            var possibleStates = new Tuple<int[], int>[moves.Length];
+            int[] moves = boardState.Select((b, i) => b == 0 ? i : -1).Where(x => x != -1).ToArray();
+            var possibleStates = new Tuple<int, int[]>[moves.Length];
             for (int i = 0; i < possibleStates.Length; i++)
             {
                 int move = moves[i];
                 int x = move % 3;
                 int y = move / 3;
-                var state =(int[]) boardState.Clone();
-                state[x + y * 3] = playerIndex;
-                possibleStates[i] = Tuple.Create(state, move);
+                var state = (int[])boardState.Clone();
+                state[x + y * 3] = playerID;
+                possibleStates[i] = Tuple.Create(move, state);
             }
-        
+
             return possibleStates;
         }
 
@@ -246,7 +254,7 @@ namespace TicTacToe
             Point p = label.Location;
             p.X /= 200;
             p.Y /= 200;
-        
+
             return p;
         }
         private int getIndex(Label label)
