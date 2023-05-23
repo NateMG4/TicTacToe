@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
 using System.Reflection;
+using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace TicTacToe
 {
@@ -20,11 +22,24 @@ namespace TicTacToe
         private int gameFinished => model.gameState;
         private bool testing = false;
 
+
+        private int testsRemaining = 0;
         private int gameDelay = 0;
         private int moveDelay = 0;
 
+        BackgroundWorker turnWorker = new BackgroundWorker();
+
+
         public BoardView()
         {
+            turnWorker.WorkerSupportsCancellation = true;
+            turnWorker.DoWork +=
+                new DoWorkEventHandler(turnWorker_DoWork);
+
+            turnWorker.RunWorkerCompleted +=
+                new RunWorkerCompletedEventHandler(turnWroker_RunWorkerCompleted);
+
+
             InitializeComponent();
             PlayerSelectorX.Items.AddRange(Enum.GetNames(typeof(PlayerType)));
             PlayerSelectorO.Items.AddRange(Enum.GetNames(typeof(PlayerType)));
@@ -35,8 +50,57 @@ namespace TicTacToe
             resetBoard();
 
 
+        }
+
+        private async void turnWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Player currentPlayer = GetCurrentPlayer();
+            currentPlayer.startTurn(model);
+            int move = currentPlayer.getMove();
+
+            if (move != -1 && !model.gameFinished)
+            {
+                Debug.WriteLine($"Player {playerName} played cell {move}");
+                model.move(move);
+                checkIfTerminalState();
+
+
+                if (currentPlayer.type == PlayerType.AI_PLAYER)
+                {
+                    Debug.WriteLine($"Player {playerName} turn {model.turn} delay started");
+                    System.Threading.Thread.Sleep(moveDelay);
+                    Debug.WriteLine($"Player {playerName} turn {model.turn} delay ended");
+
+                }
+            }
+        }
+
+        private async void turnWroker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            BackgroundWorker turnWorker = sender as BackgroundWorker;
+            updateFromModel();
+            if (testsRemaining > 0 && model.gameFinished)
+            {
+                Debug.WriteLine($"Game {testsRemaining} Finished");
+                await Task.Delay(gameDelay);
+                testsRemaining--;
+                resetBoard(false);
+            }
+            else if (testsRemaining <= 0 && !model.gameFinished)
+            {
+                testingEnd(); // this will be called regardless if testing was started in the first place, and everytime after all tests are completed
+                //todo fix
+            }
+
+            if (!model.gameFinished && !turnWorker.CancellationPending)
+            {
+                turnWorker.RunWorkerAsync();
+            }
+
+
 
         }
+
         private string getPlayerSymbol(int id)
         {
 
@@ -68,54 +132,52 @@ namespace TicTacToe
                 var id = model.getState(getIndex(cell));
                 cell.Text = getPlayerSymbol(id);
             }
-            if (GetCurrentPlayer().startTurn(model))
-            {
-                play();// todo call  play after 1 second timer 
-
-            }
             playerIndicator.Text = $"Player {playerName}";
+            displayWinner();
         }
 
         public async void play()
         {
             Player currentPlayer = GetCurrentPlayer();
+            currentPlayer.startTurn(model);
             int move = currentPlayer.getMove();
-
 
             if (move != -1 && !model.gameFinished)
             {
+
+                model.move(move);
+                checkIfTerminalState();
+
+
                 if (currentPlayer.type == PlayerType.AI_PLAYER)
                 {
+                    Debug.WriteLine($"Player {playerName} turn {model.turn} delay started");
                     await Task.Delay(moveDelay);
-                }
-                model.move(move);
-                checkForWinner();
-                updateFromModel();
+                    Debug.WriteLine($"Player {playerName} turn {model.turn} delay ended");
 
+                }
             }
+        }
+
+        public async void testingStart(int numGames, int moveDelay, int gameDelay)
+        {
+            this.gameDelay = gameDelay;
+            this.moveDelay = moveDelay;
+            this.testsRemaining = numGames;
+
+            TestStats.Visible = true;
+            PlayerSelectorX.SelectedIndex = (int)PlayerType.AI_PLAYER;
+            PlayerSelectorO.SelectedIndex = (int)PlayerType.AI_PLAYER;
 
 
 
         }
 
-        public async void testingStart(int numGames, int moveDelay, int gameDelay)
+        public async void testingEnd()
         {
-            PlayerSelectorX.SelectedIndex = (int)PlayerType.AI_PLAYER;
-            PlayerSelectorO.SelectedIndex = (int)PlayerType.AI_PLAYER;
-            this.gameDelay = gameDelay;
-            this.moveDelay = moveDelay;
-
-            for (int i = 0; i < numGames; i++)
-            {
-                model = new BoardModel(this);
-                updateFromModel(); // using awiat task.run breaks here
-                if (model.gameState != 0)
-                {
-                    return;
-                }
-                await Task.Delay(gameDelay);
-            }
-
+            this.gameDelay = 0;
+            this.moveDelay = 0;
+            this.testsRemaining = 0;
         }
 
 
@@ -178,7 +240,7 @@ namespace TicTacToe
 
             return values[0] + values[1] * 3;
         }
-        public void resetBoard()
+        public void resetBoard(bool startTurnWorker = true)
         {
 
             model = new BoardModel(this);
@@ -189,6 +251,10 @@ namespace TicTacToe
                 player.nextMove = -1;
             }
             updateFromModel();
+            if (!turnWorker.IsBusy && startTurnWorker)
+            {
+                turnWorker.RunWorkerAsync();
+            }
         }
 
         private void onCellClick(object sender, EventArgs e)
@@ -201,20 +267,33 @@ namespace TicTacToe
             }
         }
 
-        public void checkForWinner()
+        public void displayWinner()
         {
             var state = model.gameState;
+            var add = testsRemaining > 0 ? 1 : 0;
             if (state != 0)
             {
                 var playerName = state == 1 ? "X" : "O";
                 winner.Text = $"Player {playerName} Won!";
-                model.gameFinished = true;
+                // (this.Controls[$"{playerName}WinsCounter"] as Label).Text = "0";
 
             }
             else if (state == 0 && model.turn >= 9)
             {
 
                 winner.Text = $"Draw";
+            }
+        }
+        public void checkIfTerminalState()
+        {
+            var state = model.gameState;
+            if (state != 0)
+            {
+                model.gameFinished = true;
+
+            }
+            else if (state == 0 && model.turn >= 9)
+            {
                 model.gameFinished = true;
             }
         }

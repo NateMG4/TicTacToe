@@ -61,8 +61,9 @@
             moveDelay.Maximum = new decimal(new int[] { 60000, 0, 0, 0 });
             moveDelay.MinimumSize = new Size(50, 0);
             moveDelay.Name = "moveDelay";
-            moveDelay.Size = new Size(77, 39);
+            moveDelay.Size = new Size(103, 39);
             moveDelay.TabIndex = 1;
+            moveDelay.Value = new decimal(new int[] { 500, 0, 0, 0 });
             // 
             // gameDelay
             // 
@@ -73,8 +74,9 @@
             gameDelay.Maximum = new decimal(new int[] { 60000, 0, 0, 0 });
             gameDelay.MinimumSize = new Size(50, 0);
             gameDelay.Name = "gameDelay";
-            gameDelay.Size = new Size(77, 39);
+            gameDelay.Size = new Size(103, 39);
             gameDelay.TabIndex = 2;
+            gameDelay.Value = new decimal(new int[] { 500, 0, 0, 0 });
             // 
             // moveDelayLabel
             // 
@@ -118,7 +120,7 @@
             numGames.Name = "numGames";
             numGames.Size = new Size(77, 39);
             numGames.TabIndex = 5;
-            numGames.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numGames.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // TestingUtils
             // 

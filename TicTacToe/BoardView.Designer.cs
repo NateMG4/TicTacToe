@@ -48,7 +48,15 @@
             menuStrip1 = new MenuStrip();
             testingToolStripMenuItem = new ToolStripMenuItem();
             runTestToolStripMenuItem = new ToolStripMenuItem();
+            TestStats = new Panel();
+            OWinCounter = new Label();
+            label9 = new Label();
+            DrawCounter = new Label();
+            label7 = new Label();
+            XWinCounter = new Label();
+            label4 = new Label();
             menuStrip1.SuspendLayout();
+            TestStats.SuspendLayout();
             SuspendLayout();
             // 
             // Cell01
@@ -285,15 +293,90 @@
             // runTestToolStripMenuItem
             // 
             runTestToolStripMenuItem.Name = "runTestToolStripMenuItem";
-            runTestToolStripMenuItem.Size = new Size(270, 34);
+            runTestToolStripMenuItem.Size = new Size(180, 34);
             runTestToolStripMenuItem.Text = "Run Test";
             runTestToolStripMenuItem.Click += ConfigureTestProperties;
+            // 
+            // TestStats
+            // 
+            TestStats.Controls.Add(OWinCounter);
+            TestStats.Controls.Add(label9);
+            TestStats.Controls.Add(DrawCounter);
+            TestStats.Controls.Add(label7);
+            TestStats.Controls.Add(XWinCounter);
+            TestStats.Controls.Add(label4);
+            TestStats.Location = new Point(639, 298);
+            TestStats.Name = "TestStats";
+            TestStats.Size = new Size(183, 357);
+            TestStats.TabIndex = 20;
+            TestStats.Visible = false;
+            // 
+            // OWinCounter
+            // 
+            OWinCounter.AutoSize = true;
+            OWinCounter.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            OWinCounter.Location = new Point(139, 124);
+            OWinCounter.Name = "OWinCounter";
+            OWinCounter.Size = new Size(27, 32);
+            OWinCounter.TabIndex = 5;
+            OWinCounter.Text = "0";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label9.Location = new Point(8, 124);
+            label9.Name = "label9";
+            label9.Size = new Size(93, 32);
+            label9.TabIndex = 4;
+            label9.Text = "O Win: ";
+            // 
+            // DrawCounter
+            // 
+            DrawCounter.AutoSize = true;
+            DrawCounter.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            DrawCounter.Location = new Point(139, 92);
+            DrawCounter.Name = "DrawCounter";
+            DrawCounter.Size = new Size(27, 32);
+            DrawCounter.TabIndex = 3;
+            DrawCounter.Text = "0";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Location = new Point(28, 92);
+            label7.Name = "label7";
+            label7.Size = new Size(73, 32);
+            label7.TabIndex = 2;
+            label7.Text = "Draw:";
+            // 
+            // XWinCounter
+            // 
+            XWinCounter.AutoSize = true;
+            XWinCounter.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            XWinCounter.Location = new Point(139, 60);
+            XWinCounter.Name = "XWinCounter";
+            XWinCounter.Size = new Size(27, 32);
+            XWinCounter.TabIndex = 1;
+            XWinCounter.Text = "0";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(12, 60);
+            label4.Name = "label4";
+            label4.Size = new Size(89, 32);
+            label4.TabIndex = 0;
+            label4.Text = "X Win: ";
             // 
             // BoardView
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(834, 935);
+            Controls.Add(TestStats);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(PlayerSelectorO);
@@ -319,6 +402,8 @@
             Load += Form1_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            TestStats.ResumeLayout(false);
+            TestStats.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -344,5 +429,12 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem testingToolStripMenuItem;
         private ToolStripMenuItem runTestToolStripMenuItem;
+        private Panel TestStats;
+        private Label label4;
+        private Label OWinCounter;
+        private Label label9;
+        private Label DrawCounter;
+        private Label label7;
+        private Label XWinCounter;
     }
 }
