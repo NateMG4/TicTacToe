@@ -18,8 +18,8 @@ namespace TicTacToe
 
         public PlayerType type { get; private set; }
         public int playerID { get; private set; }
-        public Board board { get; private set; }
-        public Player(PlayerType type, int playerId, Board board)
+        public BoardView board { get; private set; }
+        public Player(PlayerType type, int playerId, BoardView board)
         {
 
             this.type = type;
@@ -27,73 +27,105 @@ namespace TicTacToe
             this.board = board;
         }
 
-        public virtual int getMove(int[] boardState)
+        /// <summary>
+        /// Player Factory
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="playerId"></param>
+        /// <param name="board"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static Player create(PlayerType type, int playerId, BoardView board)
         {
-            return 0;
-        }
-    }
+            switch(type)
+            {
+                case PlayerType.HUMAN_PLAYER:
+                    return new HumanPlayer(playerId, board);
+                case PlayerType.AI_PLAYER:
+                    return new AiPlayer(playerId, board);
 
-    public class HumanPlayer : Player
-    {
-        public HumanPlayer(int playerId, Board board) : base(PlayerType.HUMAN_PLAYER, playerId, board)
-        {
-            
+            }
+            throw new NotImplementedException($"Unknown player type {type}");
         }
-
-        override public int getMove(int[] boardState)
+        public int getMove()
         {
             int val = nextMove;
             nextMove = -1;
             return val;
         }
+
+
+        public virtual bool startTurn(BoardModel boardState)
+        {
+            //Move is not ready
+            return false;
+        }
+        public virtual void endTurn()
+        {
+
+        }
+    }
+
+    public class HumanPlayer : Player
+    {
+        public HumanPlayer(int playerId, BoardView board) : base(PlayerType.HUMAN_PLAYER, playerId, board)
+        {
+            
+        }
+
+
+
     }
 
     public class AiPlayer : Player
     {
-        public AiPlayer(int playerId, Board board) : base(PlayerType.AI_PLAYER, playerId, board)
+        public AiPlayer(int playerId, BoardView board) : base(PlayerType.AI_PLAYER, playerId, board)
         {
         }
 
-        public override int getMove(int[] boardState)
+        public override bool startTurn(BoardModel boardState)
         {
-            var possibleStates = board.getAllPosibleMoves(boardState, playerID);
+            var possibleStates = boardState.getNextMoves();
             int bestMove = -1;
             int bestMoveValue = -10 * playerID;
+            // remove values array
             var values = new int[possibleStates.Length];
             for (int i = 0; i < possibleStates.Length; i++)
             {
-                (int move, int[] state) = possibleStates[i];
+                var model = possibleStates[i];
 
-                values[i] = minmax(state, board.turn +1);
+                values[i] = minmax(model);
                 if (values[i] * playerID > bestMoveValue * playerID)
                 {
-                    bestMove = move;
+                    bestMove = model.previousMove;
                     bestMoveValue = values[i];
                 }
 
             }
-            return bestMove;
+            nextMove = bestMove;
+            return true;
         }
 
 
-        private int minmax(int[] boardState, int turn)
+        private int minmax(BoardModel boardState)
         {
-            int player = turn % 2;
-            var playerId = board.players[player].playerID;
-            int gameState = board.EvalutateBoardState(boardState, player);
-            if (gameState != 0 || (turn == 8 && gameState == 0))
+/*            int player = turn % 2;
+            var playerId = board.players[player].playerID;*/
+
+            int gameState = boardState.EvalutateBoardState();
+            if (gameState != 0 || (boardState.turn >= 9 && gameState == 0))
             {
                 return gameState;
             }
 
-            var possibleStates = board.getAllPosibleMoves(boardState, playerId);
+            var possibleStates = boardState.getNextMoves();
             var values = new int[possibleStates.Length];
             for (int i = 0; i < possibleStates.Length; i++)
             {
-                (int move, int[] state) = possibleStates[i];
+                var model = possibleStates[i];
 
 
-                values[i] = minmax(state, turn + 1);
+                values[i] = minmax(model);
             }
 
 
@@ -102,7 +134,7 @@ namespace TicTacToe
             for (int n = 0; n < values.Length; n++)
             {
                 // if (values[n][1] * modifier > bestMove[1] * modifier)
-                if (values[n] * playerId > values[best] * playerId)
+                if (values[n] * boardState.playerID> values[best] * boardState.playerID)
                 {
                     // bestMove = values[n];
                     best = n;
@@ -110,11 +142,6 @@ namespace TicTacToe
 
             }
 
-            // if (bestMove[1] != 0)
-            // {
-            //     Console.WriteLine(bestMove[1]);
-            // }
-            // return bestMove;
 
             return values[best];
         }

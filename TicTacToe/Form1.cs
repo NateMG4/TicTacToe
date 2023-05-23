@@ -13,8 +13,8 @@ namespace TicTacToe
     public partial class Form1 : Form
     {
 
-        Board board { get; set; }
-        public Form1(Board board)
+        BoardView board { get; set; }
+        public Form1(BoardView board)
         {
             InitializeComponent();
             board = board;

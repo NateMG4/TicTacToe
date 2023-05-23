@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe
 {
-    partial class Board
+    partial class BoardView
     {
         /// <summary>
         ///  Required designer variable.
@@ -41,9 +41,11 @@
             winner = new Label();
             playerIndicator = new Label();
             toolStrip1 = new ToolStrip();
-            checkBox1 = new CheckBox();
             label1 = new Label();
-            checkBox2 = new CheckBox();
+            PlayerSelectorX = new ComboBox();
+            PlayerSelectorO = new ComboBox();
+            label2 = new Label();
+            label3 = new Label();
             SuspendLayout();
             // 
             // Cell01
@@ -205,17 +207,6 @@
             toolStrip1.TabIndex = 12;
             toolStrip1.Text = "toolStrip1";
             // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkBox1.Location = new Point(12, 262);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(38, 25);
-            checkBox1.TabIndex = 13;
-            checkBox1.Text = "X";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -226,25 +217,58 @@
             label1.TabIndex = 14;
             label1.Text = "AI Player";
             // 
-            // checkBox2
+            // PlayerSelectorX
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkBox2.Location = new Point(12, 293);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(41, 25);
-            checkBox2.TabIndex = 15;
-            checkBox2.Text = "O";
-            checkBox2.UseVisualStyleBackColor = true;
+            PlayerSelectorX.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            PlayerSelectorX.FormattingEnabled = true;
+            PlayerSelectorX.Location = new Point(0, 280);
+            PlayerSelectorX.Name = "PlayerSelectorX";
+            PlayerSelectorX.Size = new Size(121, 29);
+            PlayerSelectorX.TabIndex = 15;
+            PlayerSelectorX.SelectedIndexChanged += createPlayers;
             // 
-            // Board
+            // PlayerSelectorO
+            // 
+            PlayerSelectorO.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            PlayerSelectorO.FormattingEnabled = true;
+            PlayerSelectorO.Location = new Point(0, 347);
+            PlayerSelectorO.Name = "PlayerSelectorO";
+            PlayerSelectorO.Size = new Size(121, 29);
+            PlayerSelectorO.TabIndex = 16;
+            PlayerSelectorO.SelectedIndexChanged += createPlayers;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.Location = new Point(51, 256);
+            label2.Name = "label2";
+            label2.Size = new Size(19, 21);
+            label2.TabIndex = 17;
+            label2.Text = "X";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(49, 323);
+            label3.Name = "label3";
+            label3.Size = new Size(22, 21);
+            label3.TabIndex = 18;
+            label3.Text = "O";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // BoardView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 561);
-            Controls.Add(checkBox2);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(PlayerSelectorO);
+            Controls.Add(PlayerSelectorX);
             Controls.Add(label1);
-            Controls.Add(checkBox1);
             Controls.Add(toolStrip1);
             Controls.Add(playerIndicator);
             Controls.Add(winner);
@@ -258,7 +282,7 @@
             Controls.Add(Cell20);
             Controls.Add(Cell10);
             Controls.Add(Cell00);
-            Name = "Board";
+            Name = "BoardView";
             Text = "TicTacToe";
             Load += Form1_Load;
             ResumeLayout(false);
@@ -279,8 +303,10 @@
         private Label winner;
         private Label playerIndicator;
         private ToolStrip toolStrip1;
-        private CheckBox checkBox1;
         private Label label1;
-        private CheckBox checkBox2;
+        private ComboBox PlayerSelectorX;
+        private ComboBox PlayerSelectorO;
+        private Label label2;
+        private Label label3;
     }
 }
