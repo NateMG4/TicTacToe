@@ -19,12 +19,15 @@ namespace TicTacToe
         private Label[] cells;
         private int gameFinished => model.gameState;
         private bool testing = false;
+
+        private int gameDelay = 0;
+        private int moveDelay = 0;
+
         public BoardView()
         {
             InitializeComponent();
             PlayerSelectorX.Items.AddRange(Enum.GetNames(typeof(PlayerType)));
             PlayerSelectorO.Items.AddRange(Enum.GetNames(typeof(PlayerType)));
-            var test = Enum.GetNames(typeof(PlayerType));
             PlayerSelectorX.SelectedIndex = 0;
             PlayerSelectorO.SelectedIndex = 1;
 
@@ -50,17 +53,6 @@ namespace TicTacToe
                 return "";
             }
         }
-/*        private void createPlayers()
-        {
-            var typeX = (PlayerType)Enum.Parse(typeof(PlayerType), PlayerSelectorX.SelectedItem.ToString());
-            var typeO = (PlayerType)Enum.Parse(typeof(PlayerType), PlayerSelectorO.SelectedItem.ToString());
-
-            var pX = Player.create(typeX, 1, this);
-
-            var pO = Player.create(typeO, -1, this);
-            players[0] = pX;
-            players[1] = pO;
-        }*/
         private void createPlayers(object sender, EventArgs e)
         {
             var selector = sender as ComboBox;
@@ -71,27 +63,20 @@ namespace TicTacToe
         }
         public void updateFromModel()
         {
-            // todo: read board state and apply to cells
             foreach (var cell in cells)
             {
                 var id = model.getState(getIndex(cell));
                 cell.Text = getPlayerSymbol(id);
             }
-            if (!model.gameFinished)// -1 if game over
+            if (GetCurrentPlayer().startTurn(model))
             {
-                if (GetCurrentPlayer().startTurn(model))
-                {
-                    play();// todo call ascencrounsesly  play after 1 second timer 
-
-                }
-
+                play();// todo call  play after 1 second timer 
 
             }
             playerIndicator.Text = $"Player {playerName}";
-
         }
 
-        public void play()
+        public async void play()
         {
             Player currentPlayer = GetCurrentPlayer();
             int move = currentPlayer.getMove();
@@ -99,17 +84,37 @@ namespace TicTacToe
 
             if (move != -1 && !model.gameFinished)
             {
+                if (currentPlayer.type == PlayerType.AI_PLAYER)
+                {
+                    await Task.Delay(moveDelay);
+                }
                 model.move(move);
                 checkForWinner();
-
                 updateFromModel();
 
             }
 
+
+
         }
 
-        private void testingStart(int numGames, int moveDelay, int gameDelay)
+        public async void testingStart(int numGames, int moveDelay, int gameDelay)
         {
+            PlayerSelectorX.SelectedIndex = (int)PlayerType.AI_PLAYER;
+            PlayerSelectorO.SelectedIndex = (int)PlayerType.AI_PLAYER;
+            this.gameDelay = gameDelay;
+            this.moveDelay = moveDelay;
+
+            for (int i = 0; i < numGames; i++)
+            {
+                model = new BoardModel(this);
+                updateFromModel(); // using awiat task.run breaks here
+                if (model.gameState != 0)
+                {
+                    return;
+                }
+                await Task.Delay(gameDelay);
+            }
 
         }
 
@@ -184,7 +189,6 @@ namespace TicTacToe
                 player.nextMove = -1;
             }
             updateFromModel();
-
         }
 
         private void onCellClick(object sender, EventArgs e)
@@ -215,7 +219,24 @@ namespace TicTacToe
             }
         }
 
+        private void label2_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void ConfigureTestProperties(object sender, EventArgs e)
+        {
+            TestingUtils testingProperties = new TestingUtils(this);
+            testingProperties.Show();
+        }
     }
 
 }

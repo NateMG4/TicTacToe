@@ -85,7 +85,14 @@ namespace TicTacToe
 
         public override bool startTurn(BoardModel boardState)
         {
+            Random rand = new Random();
             var possibleStates = boardState.getNextMoves();
+            if (boardState.turn <= 0)
+            {
+                nextMove = possibleStates[rand.Next(0, possibleStates.Length)].previousMove;
+                return true;
+            }
+
             int bestMove = -1;
             int bestMoveValue = -10 * playerID;
             // remove values array

@@ -38,7 +38,6 @@ namespace TicTacToe
         public void move(int cellIndex)
         {
             hiddenMove(cellIndex);
-            boardView.updateFromModel();
 
         }
         public void hiddenMove(int cellIndex)
