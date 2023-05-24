@@ -40,7 +40,7 @@ namespace TicTacToe
             hiddenMove(cellIndex);
 
         }
-        public void hiddenMove(int cellIndex)
+        public void hiddenMove(int cellIndex) // The double move methods are not needed anymore.
         {
             if (data[cellIndex] == 0)
             {

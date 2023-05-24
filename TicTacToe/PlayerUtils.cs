@@ -136,21 +136,18 @@ namespace TicTacToe
             }
 
 
-            // var bestMove = values[0];
-            var best = 0;
+            var bestIndex = 0;
             for (int n = 0; n < values.Length; n++)
             {
-                // if (values[n][1] * modifier > bestMove[1] * modifier)
-                if (values[n] * boardState.playerID> values[best] * boardState.playerID)
+                if (values[n] * boardState.playerID> values[bestIndex] * boardState.playerID)
                 {
-                    // bestMove = values[n];
-                    best = n;
+                    bestIndex = n;
                 }
 
             }
 
 
-            return values[best];
+            return values[bestIndex];
         }
 
     }
