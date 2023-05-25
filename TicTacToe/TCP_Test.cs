@@ -52,7 +52,7 @@ namespace TicTacToe
                 IPEndPoint server = new IPEndPoint(serverIP, (int)Port_Server.Value);
 
                 // Prefer a using declaration to ensure the instance is Disposed later.
-                client = new TcpClient(server);
+                client = new TcpClient();
 
 
             }
@@ -89,7 +89,7 @@ namespace TicTacToe
             Console.WriteLine("Sent: {0}", message);
 
             // Receive the server response.
-
+            await Task.Delay(1000);
             // Buffer to store the response bytes.
             data = new Byte[256];
 
@@ -167,8 +167,11 @@ namespace TicTacToe
                     Debug.WriteLine("Received: {0}", data);
 
                     // Process the data sent by the client.
-                    ServerLog.Text = data;
+                    ServerLog.Invoke(() => ServerLog.Text = data);
+
                     data = "Message Received";
+
+
 
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
 
@@ -182,7 +185,7 @@ namespace TicTacToe
         private void PacketRecieved(object sender,
             ProgressChangedEventArgs e)
         {
-
+            // ServerLog.Text = e.Argument;
         }
 
         private void backgroundWorker1_RunWorkerCompleted(

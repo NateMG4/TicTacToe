@@ -116,6 +116,7 @@
             numGames.AutoSize = true;
             numGames.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             numGames.Location = new Point(125, 48);
+            numGames.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numGames.MinimumSize = new Size(50, 0);
             numGames.Name = "numGames";
             numGames.Size = new Size(77, 39);

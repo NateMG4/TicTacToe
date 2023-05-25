@@ -305,9 +305,9 @@
             TestStats.Controls.Add(label7);
             TestStats.Controls.Add(XWinCounter);
             TestStats.Controls.Add(label4);
-            TestStats.Location = new Point(639, 298);
+            TestStats.Location = new Point(622, 298);
             TestStats.Name = "TestStats";
-            TestStats.Size = new Size(183, 357);
+            TestStats.Size = new Size(247, 357);
             TestStats.TabIndex = 20;
             TestStats.Visible = false;
             // 

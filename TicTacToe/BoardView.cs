@@ -22,11 +22,14 @@ namespace TicTacToe
         private int gameFinished => model.gameState;
         private bool testing = false;
 
+        private Color[] colors = new Color[9];
+
+        private const int MOVE_DELAY = 100;
 
         private int testsRemaining = 0;
         private int gameDelay = 0;
-        private int moveDelay = 0;
-
+        private int moveDelay = MOVE_DELAY;
+        private int[] testingResults = new int[3]; // 0: O wins, 1: draws, 2: X wins
         BackgroundWorker turnWorker = new BackgroundWorker();
 
 
@@ -84,6 +87,7 @@ namespace TicTacToe
                 Debug.WriteLine($"Game {testsRemaining} Finished");
                 await Task.Delay(gameDelay);
                 testsRemaining--;
+                testingResults[model.gameState + 1]++;
                 resetBoard(false);
             }
             else if (testsRemaining <= 0 && !model.gameFinished)
@@ -127,13 +131,19 @@ namespace TicTacToe
         }
         public void updateFromModel()
         {
-            foreach (var cell in cells)
+            for (int i = 0; i < 9; i++)
             {
+                var cell = cells[i];
                 var id = model.getState(getIndex(cell));
                 cell.Text = getPlayerSymbol(id);
+                cell.ForeColor = colors[i];
             }
             playerIndicator.Text = $"Player {playerName}";
             displayWinner();
+            OWinCounter.Text = testingResults[0].ToString();
+            DrawCounter.Text = testingResults[1].ToString();
+            XWinCounter.Text = testingResults[2].ToString();
+
         }
 
         public async void play()
@@ -164,11 +174,11 @@ namespace TicTacToe
             this.gameDelay = gameDelay;
             this.moveDelay = moveDelay;
             this.testsRemaining = numGames;
-
+            this.testingResults = new int[3];
             TestStats.Visible = true;
             PlayerSelectorX.SelectedIndex = (int)PlayerType.AI_PLAYER;
             PlayerSelectorO.SelectedIndex = (int)PlayerType.AI_PLAYER;
-
+            resetBoard();
 
 
         }
@@ -176,7 +186,7 @@ namespace TicTacToe
         public async void testingEnd()
         {
             this.gameDelay = 0;
-            this.moveDelay = 0;
+            this.moveDelay = MOVE_DELAY;
             this.testsRemaining = 0;
         }
 
@@ -242,6 +252,12 @@ namespace TicTacToe
         }
         public void resetBoard(bool startTurnWorker = true)
         {
+            Random rnd = new Random();
+
+            for (int i = 0; i < 9; i++)
+            {
+                colors[i] = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            }
 
             model = new BoardModel(this);
             playerIndicator.Text = $"Player {playerName}";

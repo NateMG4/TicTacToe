@@ -83,7 +83,7 @@ namespace TicTacToe
         {
         }
 
-        public override bool startTurn(BoardModel boardState)
+         public override bool startTurn(BoardModel boardState)
         {
             Random rand = new Random();
             var possibleStates = boardState.getNextMoves();

@@ -68,12 +68,12 @@
             // 
             Port_Self.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Port_Self.Location = new Point(130, 93);
-            Port_Self.Maximum = new decimal(new int[] { 5320, 0, 0, 0 });
-            Port_Self.Minimum = new decimal(new int[] { 5310, 0, 0, 0 });
+            Port_Self.Maximum = new decimal(new int[] { 27000, 0, 0, 0 });
+            Port_Self.Minimum = new decimal(new int[] { 26900, 0, 0, 0 });
             Port_Self.Name = "Port_Self";
             Port_Self.Size = new Size(180, 35);
             Port_Self.TabIndex = 17;
-            Port_Self.Value = new decimal(new int[] { 5310, 0, 0, 0 });
+            Port_Self.Value = new decimal(new int[] { 26935, 0, 0, 0 });
             // 
             // label2
             // 
@@ -216,12 +216,12 @@
             // 
             Port_Server.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Port_Server.Location = new Point(130, 93);
-            Port_Server.Maximum = new decimal(new int[] { 5320, 0, 0, 0 });
-            Port_Server.Minimum = new decimal(new int[] { 5310, 0, 0, 0 });
+            Port_Server.Maximum = new decimal(new int[] { 27000, 0, 0, 0 });
+            Port_Server.Minimum = new decimal(new int[] { 26900, 0, 0, 0 });
             Port_Server.Name = "Port_Server";
             Port_Server.Size = new Size(180, 35);
             Port_Server.TabIndex = 32;
-            Port_Server.Value = new decimal(new int[] { 5310, 0, 0, 0 });
+            Port_Server.Value = new decimal(new int[] { 26935, 0, 0, 0 });
             // 
             // label3
             // 
