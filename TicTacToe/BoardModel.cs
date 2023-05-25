@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,37 +11,30 @@ namespace TicTacToe
 
     public class BoardModel
     {
-        private BoardView boardView;
         public int turn { get; private set; } = 0;
         public int playerNumber => turn % 2;
         private int[] data = new int[9];
         public int previousMove { get; private set; } = -1;
         public int gameState => EvalutateBoardState();
         public bool gameFinished = false;
-        public int playerID => boardView.players[playerNumber].playerID;
+        public int playerID => playerNumber == 0 ? 1 : -1;
 
-        public BoardModel(BoardView view) { 
+        public BoardModel() { 
 
-            boardView = view;
         }
         public BoardModel DeepCopy()
         {
-            BoardModel copy = new BoardModel(boardView);
+            BoardModel copy = new BoardModel();
             Array.Copy(this.data, copy.data, this.data.Length);
             copy.turn = this.turn;
             return copy;
         }
 
-        public int getState(int cellIndex)
+        public int getCellState(int cellIndex)
         {
             return data[cellIndex];
         }
         public void move(int cellIndex)
-        {
-            hiddenMove(cellIndex);
-
-        }
-        public void hiddenMove(int cellIndex) // The double move methods are not needed anymore.
         {
             if (data[cellIndex] == 0)
             {
@@ -50,7 +44,6 @@ namespace TicTacToe
 
 
             }
-
         }
 
 
@@ -58,8 +51,8 @@ namespace TicTacToe
         {
             for (int p = 0; p < 2; p++)
             {
+                var playerID = p == 0 ? 1 : -1;
                 int[] pointCounter = new int[8];
-                var playerID = boardView.players[p].playerID;
                 for (int i = 0; i < data.Length; i++)
                 {
                     if (data[i] != playerID)
@@ -93,7 +86,19 @@ namespace TicTacToe
             return 0;
 
         }
+        public void checkIfTerminalState()
+        {
+            var state = gameState;
+            if (state != 0)
+            {
+                gameFinished = true;
 
+            }
+            else if (state == 0 && turn >= 9)
+            {
+                gameFinished = true;
+            }
+        }
 
         public BoardModel[] getNextMoves()
         {
@@ -114,8 +119,8 @@ namespace TicTacToe
 
         private BoardModel modelFuture(int move)
         {
-            BoardModel model = this.DeepCopy();
-            model.hiddenMove(move);
+            BoardModel model = this.DeepCopy(); 
+            model.move(move);
             return model;
 
         }

@@ -223,7 +223,6 @@
             label1.Size = new Size(159, 48);
             label1.TabIndex = 14;
             label1.Text = "AI Player";
-            label1.Click += label1_Click;
             // 
             // PlayerSelectorX
             // 
@@ -234,7 +233,6 @@
             PlayerSelectorX.Name = "PlayerSelectorX";
             PlayerSelectorX.Size = new Size(171, 36);
             PlayerSelectorX.TabIndex = 15;
-            PlayerSelectorX.SelectedIndexChanged += createPlayers;
             // 
             // PlayerSelectorO
             // 
@@ -245,7 +243,6 @@
             PlayerSelectorO.Name = "PlayerSelectorO";
             PlayerSelectorO.Size = new Size(171, 36);
             PlayerSelectorO.TabIndex = 16;
-            PlayerSelectorO.SelectedIndexChanged += createPlayers;
             // 
             // label2
             // 
@@ -258,7 +255,6 @@
             label2.TabIndex = 17;
             label2.Text = "X";
             label2.TextAlign = ContentAlignment.MiddleCenter;
-            label2.Click += label2_Click;
             // 
             // label3
             // 
@@ -271,7 +267,6 @@
             label3.TabIndex = 18;
             label3.Text = "O";
             label3.TextAlign = ContentAlignment.MiddleCenter;
-            label3.Click += label3_Click;
             // 
             // menuStrip1
             // 
@@ -399,7 +394,6 @@
             Margin = new Padding(4, 5, 4, 5);
             Name = "BoardView";
             Text = "TicTacToe";
-            Load += Form1_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             TestStats.ResumeLayout(false);

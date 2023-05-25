@@ -22,7 +22,8 @@ namespace TicTacToe
 
         private void runTests(object sender, EventArgs e)
         {
-            board.testingStart((int)numGames.Value, (int)moveDelay.Value, (int)gameDelay.Value);
+            // board.testingStart((int)numGames.Value, (int)moveDelay.Value, (int)gameDelay.Value);
+
         }
     }
 

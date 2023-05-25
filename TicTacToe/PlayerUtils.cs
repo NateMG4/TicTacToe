@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
@@ -19,7 +20,7 @@ namespace TicTacToe
         public PlayerType type { get; private set; }
         public int playerID { get; private set; }
         public BoardView board { get; private set; }
-        public Player(PlayerType type, int playerId, BoardView board)
+        public Player(PlayerType type, int playerId)
         {
 
             this.type = type;
@@ -35,14 +36,14 @@ namespace TicTacToe
         /// <param name="board"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static Player create(PlayerType type, int playerId, BoardView board)
+        public static Player create(PlayerType type, int playerId)
         {
             switch(type)
             {
                 case PlayerType.HUMAN_PLAYER:
-                    return new HumanPlayer(playerId, board);
+                    return new HumanPlayer(playerId);
                 case PlayerType.AI_PLAYER:
-                    return new AiPlayer(playerId, board);
+                    return new AiPlayer(playerId);
 
             }
             throw new NotImplementedException($"Unknown player type {type}");
@@ -57,29 +58,36 @@ namespace TicTacToe
 
         public virtual bool startTurn(BoardModel boardState)
         {
-            //Move is not ready
-            return false;
+            return nextMove != -1;
         }
         public virtual void endTurn()
         {
 
         }
+
+        public virtual void setMove(int move)
+        {
+        }
     }
 
     public class HumanPlayer : Player
     {
-        public HumanPlayer(int playerId, BoardView board) : base(PlayerType.HUMAN_PLAYER, playerId, board)
+        public HumanPlayer(int playerId) : base(PlayerType.HUMAN_PLAYER, playerId)
         {
             
         }
 
-
+        public override void setMove(int move)
+        {
+            Debug.WriteLine($"Move for cell {move} set");
+            nextMove = move;
+        }
 
     }
 
     public class AiPlayer : Player
     {
-        public AiPlayer(int playerId, BoardView board) : base(PlayerType.AI_PLAYER, playerId, board)
+        public AiPlayer(int playerId) : base(PlayerType.AI_PLAYER, playerId)
         {
         }
 
