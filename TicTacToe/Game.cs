@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Transactions;
 
 namespace TicTacToe;
@@ -10,21 +11,30 @@ public class Game
     public Player[] players { get; private set; } = new Player[2];
     public BoardModel model { get; private set;}
     public GameRunner runner { get; private set; }
-
+    public int moveDelay = 0;
     public Player currentPlayer { get; private set; }
     BackgroundWorker turnWorker = new BackgroundWorker();
 
     public Game(GameRunner runner, List<PlayerType> types)
     {
+        Initialize(runner, types);
+    }
+    public Game(GameRunner runner, List<PlayerType> types, int moveDelay)
+    {
+        this.moveDelay = moveDelay;
+        Initialize(runner, types);
+    }
+    private void Initialize(GameRunner runner, List<PlayerType> types) {
         InitializeBackgroundWorker();
 
         model = new BoardModel();
-        players[0] = Player.create(types[0],1);
+        players[0] = Player.create(types[0], 1);
         players[1] = Player.create(types[1], -1);
         currentPlayer = players[0];
         this.runner = runner;
         turnWorker.RunWorkerAsync();
     }
+
 
     private async void GameLoop(object sender, DoWorkEventArgs e)
     {
@@ -40,7 +50,7 @@ public class Game
                 worker.ReportProgress(model.turn / 9);
             }
 
-            // await Task.Delay(500);
+            Thread.Sleep(moveDelay);
 
         }
     }

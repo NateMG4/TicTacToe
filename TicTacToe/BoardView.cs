@@ -51,9 +51,14 @@ namespace TicTacToe
             playerIndicator.Text = $"Player {symbol}";
             displayWinner(model);
 
-            // OWinCounter.Text = testingResults[0].ToString();
-            // DrawCounter.Text = testingResults[1].ToString();
-            // XWinCounter.Text = testingResults[2].ToString();
+
+        }
+
+        public void UpdateTestingResults(int[] testingResults)
+        {
+            OWinCounter.Text = testingResults[0].ToString();
+            DrawCounter.Text = testingResults[1].ToString();
+            XWinCounter.Text = testingResults[2].ToString();
         }
         private string getPlayerSymbol(int id)
         {
@@ -79,22 +84,18 @@ namespace TicTacToe
             types.Add((PlayerType)Enum.Parse(typeof(PlayerType), PlayerSelectorO.SelectedItem.ToString()));
             return types;
         }
+
+
+
+        public async void testingStart()
+        {
+
+            TestStats.Visible = true;
+            PlayerSelectorX.SelectedIndex = (int)PlayerType.AI_PLAYER;
+            PlayerSelectorO.SelectedIndex = (int)PlayerType.AI_PLAYER;
+       
         
-
-
-        // public async void testingStart(int numGames, int moveDelay, int gameDelay)
-        // {
-        //     this.gameDelay = gameDelay;
-        //     this.moveDelay = moveDelay;
-        //     this.testsRemaining = numGames;
-        //     this.testingResults = new int[3];
-        //     TestStats.Visible = true;
-        //     PlayerSelectorX.SelectedIndex = (int)PlayerType.AI_PLAYER;
-        //     PlayerSelectorO.SelectedIndex = (int)PlayerType.AI_PLAYER;
-        //     resetBoard();
-        //
-        //
-        // }
+        }
 
         // public async void testingEnd()
         // {

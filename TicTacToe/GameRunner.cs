@@ -10,7 +10,7 @@ public abstract class GameRunner
 
     }
 
-    public void CreateGame()
+    public virtual void CreateGame()
     {
         currentGame = new Game(this, getPlayerTypes());
     }
@@ -25,13 +25,32 @@ public class TestRunner : GameRunner
 {
     private int numGames = 0;
     public bool finished = false;
-    public TestRunner(int numGames) : base()
+    private BoardView viewer;
+    private int[] TestingResults = new int[3];
+    private int gameDelay = 0;
+    private int moveDelay = 0;
+    public TestRunner(int numGames, int moveDelay, int gameDelay) : base()
     {
+        this.moveDelay = moveDelay;
+        this.gameDelay = gameDelay;
         this.numGames = numGames;
+        viewer = new BoardView();
+        viewer.testingStart();
+        viewer.Show();
+        CreateGame();
     }
-    public override void GameFinished()
+
+    public void CreateGame()
     {
+        currentGame = new Game(this, getPlayerTypes(), moveDelay);
+
+    }
+    public override async void GameFinished()
+    {
+        TestingResults[currentGame.model.gameState + 1]++;
         numGames--;
+        viewer.UpdateTestingResults(TestingResults);
+        await Task.Delay(gameDelay);
         if (numGames >= 0)
         {
             reset();
@@ -50,11 +69,14 @@ public class TestRunner : GameRunner
     public override void reset()
     {
         CreateGame();
+        viewer.resetBoard(currentGame.model);
+
     }
 
     public override void TurnFinished()
     {
-        
+        viewer.updateFromModel(currentGame.model);
+
     }
 }
 

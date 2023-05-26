@@ -13,16 +13,16 @@ namespace TicTacToe
     public partial class TestingUtils : Form
     {
 
-        BoardView board { get; set; }
+        TestRunner runner { get; set; }
         public TestingUtils(BoardView board)
         {
             InitializeComponent();
-            this.board = board;
+
         }
 
         private void runTests(object sender, EventArgs e)
         {
-            // board.testingStart((int)numGames.Value, (int)moveDelay.Value, (int)gameDelay.Value);
+            this.runner = new TestRunner((int)numGames.Value, (int)moveDelay.Value, (int)gameDelay.Value);
 
         }
     }
