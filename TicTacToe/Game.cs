@@ -37,7 +37,6 @@ public class Game
                 int move = currentPlayer.getMove();
 
                 model.move(move);
-                model.checkIfTerminalState();
                 worker.ReportProgress(model.turn / 9);
             }
 

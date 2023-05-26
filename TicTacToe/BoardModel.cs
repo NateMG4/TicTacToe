@@ -42,7 +42,7 @@ namespace TicTacToe
                 previousMove = cellIndex;
                 turn++;
 
-
+                checkIfTerminalState();
             }
         }
 
