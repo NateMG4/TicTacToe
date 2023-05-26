@@ -51,7 +51,7 @@ public class TestRunner : GameRunner
         numGames--;
         viewer.UpdateTestingResults(TestingResults);
         await Task.Delay(gameDelay);
-        if (numGames >= 0)
+        if (numGames > 0)
         {
             reset();
         }
