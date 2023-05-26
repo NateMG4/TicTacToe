@@ -47,8 +47,8 @@ namespace TicTacToe
                 cell.Text = getPlayerSymbol(id);
                 cell.ForeColor = colors[i];
             }
-
-            playerIndicator.Text = $"Player {getPlayerSymbol(model.playerNumber)}";
+            var symbol = getPlayerSymbol(model.playerID);
+            playerIndicator.Text = $"Player {symbol}";
             displayWinner(model);
 
             // OWinCounter.Text = testingResults[0].ToString();
