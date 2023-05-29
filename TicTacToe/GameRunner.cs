@@ -1,8 +1,9 @@
 ﻿ using System.Reflection;
+using GameLogic;
 
 namespace TicTacToe;
 
-public abstract class GameRunner
+public abstract class GameRunner : IGameRunner
 {
     public Game currentGame { get; protected set; }
     public GameRunner()
@@ -10,7 +11,7 @@ public abstract class GameRunner
 
     }
 
-    public virtual void CreateGame()
+    protected virtual void CreateGame()
     {
         currentGame = new Game(this, getPlayerTypes());
     }

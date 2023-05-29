@@ -74,5 +74,11 @@ namespace TestProject1
 
         }
 
+        [TestMethod]
+        public void TestDeepCopy()
+        {
+            BoardModel board = new BoardModel();
+            
+        }
     }
 }

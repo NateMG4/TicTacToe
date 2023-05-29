@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Windows.Markup;
+using GameLogic;
 
 namespace GameLogic
 {
@@ -35,7 +36,7 @@ namespace GameLogic
         /// <exception cref="NotImplementedException"></exception>
         public static Player create(PlayerType type, int playerId)
         {
-            switch(type)
+            switch (type)
             {
                 case PlayerType.HUMAN_PLAYER:
                     return new HumanPlayer(playerId);
@@ -71,7 +72,7 @@ namespace GameLogic
     {
         public HumanPlayer(int playerId) : base(PlayerType.HUMAN_PLAYER, playerId)
         {
-            
+
         }
 
         public override void setMove(int move)
@@ -88,7 +89,7 @@ namespace GameLogic
         {
         }
 
-         public override bool startTurn(BoardModel boardState)
+        public override bool startTurn(BoardModel boardState)
         {
             Random rand = new Random();
             var possibleStates = boardState.getNextMoves();
@@ -121,8 +122,8 @@ namespace GameLogic
 
         private int minmax(BoardModel boardState)
         {
-/*            int player = turn % 2;
-            var playerId = board.players[player].playerID;*/
+            /*            int player = turn % 2;
+                        var playerId = board.players[player].playerID;*/
 
             int gameState = boardState.EvalutateBoardState();
             if (gameState != 0 || (boardState.turn >= 9 && gameState == 0))
@@ -144,7 +145,7 @@ namespace GameLogic
             var bestIndex = 0;
             for (int n = 0; n < values.Length; n++)
             {
-                if (values[n] * boardState.playerID> values[bestIndex] * boardState.playerID)
+                if (values[n] * boardState.playerID > values[bestIndex] * boardState.playerID)
                 {
                     bestIndex = n;
                 }

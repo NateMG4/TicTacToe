@@ -8,23 +8,33 @@ namespace GameLogic;
 public class Game
 {
     public Player[] players { get; private set; } = new Player[2];
-    public BoardModel model { get; private set;}
-    public GameRunner runner { get; private set; }
-
+    public BoardModel model { get; private set; }
+    public IGameRunner runner { get; private set; }
+    public int moveDelay = 0;
     public Player currentPlayer { get; private set; }
     BackgroundWorker turnWorker = new BackgroundWorker();
 
-    public Game(GameRunner runner, List<PlayerType> types)
+    public Game(IGameRunner runner, List<PlayerType> types)
+    {
+        Initialize(runner, types);
+    }
+    public Game(IGameRunner runner, List<PlayerType> types, int moveDelay)
+    {
+        this.moveDelay = moveDelay;
+        Initialize(runner, types);
+    }
+    private void Initialize(IGameRunner runner, List<PlayerType> types)
     {
         InitializeBackgroundWorker();
 
         model = new BoardModel();
-        players[0] = Player.create(types[0],1);
+        players[0] = Player.create(types[0], 1);
         players[1] = Player.create(types[1], -1);
         currentPlayer = players[0];
         this.runner = runner;
-        //turnWorker.RunWorkerAsync();
+        turnWorker.RunWorkerAsync();
     }
+
 
     private async void GameLoop(object sender, DoWorkEventArgs e)
     {
@@ -40,31 +50,17 @@ public class Game
                 worker.ReportProgress(model.turn / 9);
             }
 
-            // await Task.Delay(500);
+            Thread.Sleep(moveDelay);
 
         }
     }
 
-    public void WakeUp()
-    {
-        currentPlayer = players[model.playerNumber];
-        if (currentPlayer.startTurn(model))
-        {
-            int move = currentPlayer.getMove();
-            model.move(move);
-        }
-        if (model.gameFinished)
-        {
-            GameFinished();
-        }
-    }
-
-    private async void GameFinished()
+    private async void GameFinished(object sender, RunWorkerCompletedEventArgs e)
     {
         runner.GameFinished();
 
     }
-    private void TurnFinished()
+    private void TurnFinished(object sender, ProgressChangedEventArgs e)
     {
         runner.TurnFinished();
 
@@ -78,13 +74,13 @@ public class Game
         turnWorker.DoWork +=
             new DoWorkEventHandler(GameLoop);
 
-        //turnWorker.RunWorkerCompleted +=
-         //   new RunWorkerCompletedEventHandler(
-          //      GameFinished);
+        turnWorker.RunWorkerCompleted +=
+            new RunWorkerCompletedEventHandler(
+                GameFinished);
 
-        //turnWorker.ProgressChanged +=
-        //    new ProgressChangedEventHandler(
-         //       TurnFinished);
+        turnWorker.ProgressChanged +=
+            new ProgressChangedEventHandler(
+                TurnFinished);
 
     }
 }

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Xml.Linq;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
+using GameLogic;
 
 namespace TicTacToe
 {
