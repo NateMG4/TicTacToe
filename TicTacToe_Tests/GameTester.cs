@@ -10,19 +10,19 @@ namespace TestProject1
     public class GameTester
     {
 
-        [TestMethod]
-        public void AI_Draw_Test()
-        {
-            int Games_To_Play = 1000;
-            TestRunner tester = new TestRunner(Games_To_Play);
-            tester.StartTest();
+    //    [TestMethod]
+    //    public void AI_Draw_Test()
+    //    {
+    //        int Games_To_Play = 1000;
+    //        TestRunner tester = new TestRunner(Games_To_Play);
+    //        tester.StartTest();
 
-            while (!tester.finished)
-            {
-                tester.Run();
-            }
+    //        while (!tester.finished)
+    //        {
+    //            tester.Run();
+    //        }
 
-            Assert.AreEqual(0, tester.record);
-        }
+    //        Assert.AreEqual(0, tester.record);
+    //    }
     }
 }

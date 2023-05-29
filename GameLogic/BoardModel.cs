@@ -22,6 +22,13 @@ namespace GameLogic
         public BoardModel() { 
 
         }
+
+        public override bool Equals(object? obj)
+        {
+            BoardModel other = obj as BoardModel;
+            if (other == null) return false;
+            return data.SequenceEqual(other.data) &&  turn == other.turn;
+        }
         public BoardModel DeepCopy()
         {
             BoardModel copy = new BoardModel();

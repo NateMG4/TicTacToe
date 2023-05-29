@@ -78,7 +78,56 @@ namespace TestProject1
         public void TestDeepCopy()
         {
             BoardModel board = new BoardModel();
-            
+            BoardModel copy = board.DeepCopy();
+            Assert.AreEqual(board, copy);
+            Assert.IsFalse(board == copy);
+            copy.move(1);
+            Assert.AreNotEqual(board, copy);
+
+
+        }
+        [TestMethod]
+        public void TestEvaluateWins()
+        {
+            // X Wins on bottom row
+            var board = new TestBoardModel("617482");
+            Assert.AreEqual(board.gameState, 1);
+            Assert.IsTrue(board.gameFinished);
+
+            // O Wins on top row
+            board = new TestBoardModel("506182");
+            Assert.AreEqual(board.gameState,-1);
+            Assert.IsTrue(board.gameFinished);
+
+            // X Wins on left column
+            board = new TestBoardModel("013268");
+            Assert.AreEqual(board.gameState, 1);
+            Assert.IsTrue(board.gameFinished);
+
+            // O Wins on left column
+            board = new TestBoardModel("102386");
+            Assert.AreEqual(board.gameState, -1);
+            Assert.IsTrue(board.gameFinished);
+
+            //X wins on TopRight -> BottomLeft Diagonal
+            board = new TestBoardModel("014287");
+            Assert.AreEqual(board.gameState, 1);
+            Assert.IsTrue(board.gameFinished);
+
+            //P wins on BottomRight -> TopLeft Diagonal
+            board = new TestBoardModel("021456");
+            Assert.AreEqual(board.gameState, -1);
+            Assert.IsTrue(board.gameFinished);
+
+
+        }
+
+        [TestMethod]
+        public void TestDraw()
+        {
+            var board = new TestBoardModel("012345");
+            Assert.AreEqual(board.gameState, 0);
+            Assert.IsFalse(board.gameFinished);
         }
     }
 }
