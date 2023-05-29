@@ -33,7 +33,7 @@
             label2 = new Label();
             label1 = new Label();
             IP_Self = new TextBox();
-            ServerLog = new TabControl();
+            ConnectionTabs = new TabControl();
             tabPage1 = new TabPage();
             button3 = new Button();
             label6 = new Label();
@@ -46,9 +46,9 @@
             Port_Server = new NumericUpDown();
             label3 = new Label();
             tabPage2 = new TabPage();
-            richTextBox1 = new RichTextBox();
+            ServerLog = new RichTextBox();
             ((System.ComponentModel.ISupportInitialize)Port_Self).BeginInit();
-            ServerLog.SuspendLayout();
+            ConnectionTabs.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Port_Server).BeginInit();
             tabPage2.SuspendLayout();
@@ -106,15 +106,15 @@
             IP_Self.TabIndex = 14;
             IP_Self.Text = "127.0.0.1";
             // 
-            // ServerLog
+            // ConnectionTabs
             // 
-            ServerLog.Controls.Add(tabPage1);
-            ServerLog.Controls.Add(tabPage2);
-            ServerLog.Location = new Point(3, 1);
-            ServerLog.Name = "ServerLog";
-            ServerLog.SelectedIndex = 0;
-            ServerLog.Size = new Size(785, 373);
-            ServerLog.TabIndex = 28;
+            ConnectionTabs.Controls.Add(tabPage1);
+            ConnectionTabs.Controls.Add(tabPage2);
+            ConnectionTabs.Location = new Point(3, 1);
+            ConnectionTabs.Name = "ConnectionTabs";
+            ConnectionTabs.SelectedIndex = 0;
+            ConnectionTabs.Size = new Size(785, 373);
+            ConnectionTabs.TabIndex = 28;
             // 
             // tabPage1
             // 
@@ -176,6 +176,7 @@
             // 
             // ClientLog
             // 
+            ClientLog.CausesValidation = false;
             ClientLog.Location = new Point(332, 214);
             ClientLog.Name = "ClientLog";
             ClientLog.Size = new Size(425, 115);
@@ -237,7 +238,7 @@
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(richTextBox1);
+            tabPage2.Controls.Add(ServerLog);
             tabPage2.Controls.Add(button1);
             tabPage2.Controls.Add(IP_Self);
             tabPage2.Controls.Add(label1);
@@ -251,24 +252,25 @@
             tabPage2.Text = "Create Server";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // ServerLog
             // 
-            richTextBox1.Location = new Point(350, 47);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(410, 258);
-            richTextBox1.TabIndex = 27;
-            richTextBox1.Text = "";
+            ServerLog.Location = new Point(350, 47);
+            ServerLog.Name = "ServerLog";
+            ServerLog.Size = new Size(410, 258);
+            ServerLog.TabIndex = 27;
+            ServerLog.Text = "";
+            ServerLog.TextChanged += richTextBox1_TextChanged;
             // 
             // TCP_Test
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(809, 388);
-            Controls.Add(ServerLog);
+            Controls.Add(ConnectionTabs);
             Name = "TCP_Test";
             Text = "Connect";
             ((System.ComponentModel.ISupportInitialize)Port_Self).EndInit();
-            ServerLog.ResumeLayout(false);
+            ConnectionTabs.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)Port_Server).EndInit();
@@ -283,10 +285,10 @@
         private Label label2;
         private Label label1;
         private TextBox IP_Self;
-        private TabControl ServerLog;
+        private TabControl ConnectionTabs;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private RichTextBox richTextBox1;
+        private RichTextBox ServerLog;
         private RichTextBox ClientLog;
         private Button button2;
         private Label label4;

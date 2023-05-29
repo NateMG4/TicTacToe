@@ -89,7 +89,7 @@ namespace TicTacToe
             Console.WriteLine("Sent: {0}", message);
 
             // Receive the server response.
-            await Task.Delay(1000);
+
             // Buffer to store the response bytes.
             data = new Byte[256];
 
@@ -169,10 +169,8 @@ namespace TicTacToe
                     // Process the data sent by the client.
                     ServerLog.Invoke(() => ServerLog.Text = data);
 
+
                     data = "Message Received";
-
-
-
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
 
                     // Send back a response.
@@ -195,6 +193,11 @@ namespace TicTacToe
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
