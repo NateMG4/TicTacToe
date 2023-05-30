@@ -187,7 +187,7 @@
             resetButton.TabIndex = 9;
             resetButton.Text = "Reset";
             resetButton.UseVisualStyleBackColor = true;
-            resetButton.Click += resetButton_Click;
+            
             // 
             // winner
             // 

@@ -19,7 +19,7 @@ namespace TicTacToe
         
         private Label[] cells;
         private Color[] colors = new Color[9];
-        private ContinuousGameRunner runner;
+        private OfflineGameRunner runner;
 
 
         
@@ -31,10 +31,12 @@ namespace TicTacToe
             PlayerSelectorO.Items.AddRange(Enum.GetNames(typeof(PlayerType)));
             PlayerSelectorX.SelectedIndex = 0;
             PlayerSelectorO.SelectedIndex = 1;
-
-
-            this.runner = new ContinuousGameRunner(this);
             this.cells = FindAllCells();
+
+            this.runner = new OfflineGameRunner(this);
+            resetButton.Click += runner.reset;
+
+
             runner.reset();
 
 
@@ -129,11 +131,6 @@ namespace TicTacToe
 
 
 
-        private void resetButton_Click(object sender, EventArgs e)
-        {
-            runner.reset();
-        }
-
        
         private int getIndex(Label label)
         {
@@ -159,9 +156,24 @@ namespace TicTacToe
         }
 
         private void onCellClick(object sender, EventArgs e)
-            {
-            runner.CellClicked(getIndex(sender as Label));
+        {
+            //runner.CellClicked(getIndex(sender as Label));
+            OnMoveInput(getIndex(sender as Label));
         }
+        public event EventHandler<MoveInputEventArgs> MoveInput;
+        protected void OnMoveInput(int move)
+        {
+            var mcEvent = MoveInput;
+
+            // Event will be null if there are no subscribers
+            if (mcEvent != null)
+            {
+                MoveInputEventArgs args = new MoveInputEventArgs(move);
+                mcEvent(this, args);
+            }
+        }
+
+
 
         public void displayWinner(BoardModel model)
         {
@@ -186,5 +198,7 @@ namespace TicTacToe
             testingProperties.Show();
         }
     }
+
+
 
 }

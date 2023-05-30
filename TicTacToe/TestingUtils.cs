@@ -13,7 +13,7 @@ namespace TicTacToe
     public partial class TestingUtils : Form
     {
 
-        TestRunner runner { get; set; }
+        //TestRunner runner { get; set; }
         public TestingUtils(BoardView board)
         {
             InitializeComponent();
@@ -22,7 +22,7 @@ namespace TicTacToe
 
         private void runTests(object sender, EventArgs e)
         {
-            this.runner = new TestRunner((int)numGames.Value, (int)moveDelay.Value, (int)gameDelay.Value);
+            //this.runner = new TestRunner((int)numGames.Value, (int)moveDelay.Value, (int)gameDelay.Value);
 
         }
     }

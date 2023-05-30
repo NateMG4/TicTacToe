@@ -26,6 +26,22 @@ namespace GameLogic
             this.playerID = playerId;
         }
 
+        public event EventHandler<EventArgs> HasMove;
+
+        protected void HasMove_Trigger()
+        {
+            var evt = HasMove;
+
+            // Event will be null if there are no subscribers
+            if (evt != null)
+            {
+                EventArgs args = new EventArgs();
+                evt(this, args);
+            }
+        }
+
+
+
         /// <summary>
         /// Player Factory
         /// </summary>
@@ -54,9 +70,8 @@ namespace GameLogic
         }
 
 
-        public virtual bool startTurn(BoardModel boardState)
+        public virtual void startTurn(BoardModel boardState)
         {
-            return nextMove != -1;
         }
         public virtual void endTurn()
         {
@@ -72,31 +87,41 @@ namespace GameLogic
     {
         public HumanPlayer(int playerId) : base(PlayerType.HUMAN_PLAYER, playerId)
         {
-
         }
 
         public override void setMove(int move)
         {
-            Debug.WriteLine($"Move for cell {move} set");
+            Debug.WriteLine($"Move cell {move} set");
             nextMove = move;
         }
+        public void recieveMoveInput(object sender, MoveInputEventArgs e)
+        {
+            nextMove = e.move;
+            HasMove_Trigger();
+        }
+
 
     }
 
+
     public class AiPlayer : Player
     {
-        public AiPlayer(int playerId) : base(PlayerType.AI_PLAYER, playerId)
+        private int moveDelay = 0;
+        public AiPlayer(int playerId, int moveDelay = 0) : base(PlayerType.AI_PLAYER, playerId)
         {
+            this.moveDelay = moveDelay;
         }
 
-        public override bool startTurn(BoardModel boardState)
+
+        public override async void startTurn(BoardModel boardState)
         {
             Random rand = new Random();
             var possibleStates = boardState.getNextMoves();
             if (boardState.turn <= 0)
             {
                 nextMove = possibleStates[rand.Next(0, possibleStates.Length)].previousMove;
-                return true;
+                HasMove_Trigger();
+                return;
             }
 
             int bestMove = -1;
@@ -115,8 +140,12 @@ namespace GameLogic
                 }
 
             }
+
+
+
             nextMove = bestMove;
-            return true;
+            await Task.Delay(moveDelay);
+            HasMove_Trigger();
         }
 
 
@@ -156,5 +185,15 @@ namespace GameLogic
             return values[bestIndex];
         }
 
+    }
+
+    public class MoveInputEventArgs : EventArgs
+    {
+        public MoveInputEventArgs(int move)
+        {
+            this.move = move;
+        }
+
+        public int move { get; private set; }
     }
 }

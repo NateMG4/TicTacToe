@@ -11,10 +11,10 @@ namespace GameLogic
 
     public class BoardModel
     {
-        public int turn { get; private set; } = 0;
+        public int turn { get; protected set; } = 0;
         public int playerNumber => turn % 2;
         protected int[] data = new int[9];
-        public int previousMove { get; private set; } = -1;
+        public int previousMove { get; protected set; } = -1;
         public int gameState => EvalutateBoardState();
         public bool gameFinished = false;
         public int playerID => playerNumber == 0 ? 1 : -1;
@@ -22,6 +22,26 @@ namespace GameLogic
         public BoardModel() { 
 
         }
+
+        /// <summary>
+        /// Listeners to this event are notified whenever the model changes
+        /// </summary>
+        public event EventHandler<EventArgs> ModelChanged;
+
+        protected void ModelChanged_Trigger()
+        {
+            var mcEvent = ModelChanged;
+
+            // Event will be null if there are no subscribers
+            if (mcEvent != null)
+            {
+                EventArgs args = new EventArgs();
+                mcEvent(this, args);
+            }
+        }
+
+
+
 
         public override bool Equals(object? obj)
         {
@@ -55,6 +75,8 @@ namespace GameLogic
 
                 checkIfTerminalState();
             }
+
+
         }
 
 
@@ -141,6 +163,13 @@ namespace GameLogic
     {
         public TestBoardModel(int[] data) {
             this.data = data;
+            for(int i = 0; i < data.Length; i++)
+            {
+                if (data[i] != 0)
+                {
+                    turn++;
+                }
+            }
         }
         public TestBoardModel(string movesString)
         {

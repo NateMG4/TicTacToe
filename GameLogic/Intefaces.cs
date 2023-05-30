@@ -10,8 +10,11 @@ namespace GameLogic
     {
 
         List<PlayerType> getPlayerTypes();
-        void TurnFinished();
-        void GameFinished();
+        void TurnFinished(object sender, EventArgs arg);
+        void GameFinished(object sender, EventArgs arg);
         void reset();
+        void AddPlayerToMoveInputEvent(Player p);
     }
+
+
 }

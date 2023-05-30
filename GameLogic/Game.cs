@@ -13,6 +13,7 @@ public class Game
     public int moveDelay = 0;
     public Player currentPlayer { get; private set; }
     BackgroundWorker turnWorker = new BackgroundWorker();
+    public bool IsPaused => !turnWorker.IsBusy;
 
     public Game(IGameRunner runner, List<PlayerType> types)
     {
@@ -25,62 +26,133 @@ public class Game
     }
     private void Initialize(IGameRunner runner, List<PlayerType> types)
     {
-        InitializeBackgroundWorker();
+        //InitializeBackgroundWorker();
 
         model = new BoardModel();
+        model.ModelChanged += ModelChanged_Effect;
         players[0] = Player.create(types[0], 1);
         players[1] = Player.create(types[1], -1);
-        currentPlayer = players[0];
+        players[0].HasMove += ModelChanged_Effect;
+        players[1].HasMove += ModelChanged_Effect;
+        currentPlayer = null;
+
         this.runner = runner;
-        turnWorker.RunWorkerAsync();
+        GameStateChanged += runner.TurnFinished;
+        GameFinished += runner.GameFinished;
+
+
+        foreach(Player p in players)
+        {
+            if(p.type == PlayerType.HUMAN_PLAYER)
+            {
+                runner.AddPlayerToMoveInputEvent(p);
+            }
+        }
+
+        //turnWorker.RunWorkerAsync();
+    }
+    public void ModelChanged_Effect(object sender, EventArgs args)
+    {
+
+        // TODO: change active player?
+        if(sender as Player == currentPlayer && currentPlayer != null)
+        {
+            int move = currentPlayer.getMove();
+            model.move(move);
+        }
+        if (model.gameFinished)
+        {
+            GameFinished_Trigger();
+            return;
+        }
+        var next = players[model.playerNumber];
+        if(next != currentPlayer)
+        {
+            //todo end current player turn
+            currentPlayer = next;
+            currentPlayer.startTurn(model.DeepCopy());
+        }
+
+        GameStateChanged_Trigger();
     }
 
-
-    private async void GameLoop(object sender, DoWorkEventArgs e)
+    public event EventHandler<EventArgs> GameStateChanged;
+    protected void GameStateChanged_Trigger()
     {
-        BackgroundWorker worker = sender as BackgroundWorker;
-        while (!model.gameFinished)
+        var evt = GameStateChanged;
+
+        // Event will be null if there are no subscribers
+        if (evt != null)
         {
-            currentPlayer = players[model.playerNumber];
-            if (currentPlayer.startTurn(model))
-            {
-                int move = currentPlayer.getMove();
-
-                model.move(move);
-                worker.ReportProgress(model.turn / 9);
-            }
-
-            Thread.Sleep(moveDelay);
-
+            EventArgs args = new EventArgs();
+            evt(this, args);
         }
     }
 
-    private async void GameFinished(object sender, RunWorkerCompletedEventArgs e)
+    public event EventHandler<EventArgs> GameFinished;
+    protected void GameFinished_Trigger()
     {
-        runner.GameFinished();
+        var mcEvent = GameFinished;
 
+        // Event will be null if there are no subscribers
+        if (mcEvent != null)
+        {
+            EventArgs args = new EventArgs();
+            mcEvent(this, args);
+        }
     }
-    private void TurnFinished(object sender, ProgressChangedEventArgs e)
-    {
-        runner.TurnFinished();
+    
 
-    }
+    //public void Wake()
+    //{
+    //    turnWorker.RunWorkerAsync();
+    //}
+    //private async void GameLoop(object sender, DoWorkEventArgs e)
+    //{
+    //    BackgroundWorker worker = sender as BackgroundWorker;
+    //    while (!model.gameFinished && !currentPlayer.WaitForMove)
+    //    {
+    //        currentPlayer = players[model.playerNumber];
+    //        if (currentPlayer.startTurn(model))
+    //        {
+    //            int move = currentPlayer.getMove();
 
-    private void InitializeBackgroundWorker()
-    {
-        this.turnWorker.WorkerReportsProgress = true;
-        // this.turnWorker.WorkerSupportsCancellation = true;
+    //            model.move(move);
+    //            worker.ReportProgress(model.turn / 9);
+    //        }
 
-        turnWorker.DoWork +=
-            new DoWorkEventHandler(GameLoop);
+    //        Thread.Sleep(moveDelay);
 
-        turnWorker.RunWorkerCompleted +=
-            new RunWorkerCompletedEventHandler(
-                GameFinished);
+    //    }
+    //}
 
-        turnWorker.ProgressChanged +=
-            new ProgressChangedEventHandler(
-                TurnFinished);
+    //private async void GameFinished(object sender, RunWorkerCompletedEventArgs e)
+    //{
 
-    }
+    //    runner.GameFinished();
+
+    //}
+    //private void TurnFinished(object sender, ProgressChangedEventArgs e)
+    //{
+    //    runner.TurnFinished();
+
+    //}
+
+    //private void InitializeBackgroundWorker()
+    //{
+    //    this.turnWorker.WorkerReportsProgress = true;
+    //    // this.turnWorker.WorkerSupportsCancellation = true;
+
+    //    turnWorker.DoWork +=
+    //        new DoWorkEventHandler(GameLoop);
+
+    //    turnWorker.RunWorkerCompleted +=
+    //        new RunWorkerCompletedEventHandler(
+    //            GameFinished);
+
+    //    turnWorker.ProgressChanged +=
+    //        new ProgressChangedEventHandler(
+    //            TurnFinished);
+
+    //}
 }
